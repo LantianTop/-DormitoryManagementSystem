@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7 dtd">
+    
+<struts>
+	
+	<constant name="struts.custom.i18n.resources" value="messageResource"/>
+    <!-- 设置该应用使用的解码集 -->
+    <constant name="struts.i18n.encoding" value="utf-8"/>
+    <!-- 上传的全部图片的最大限制-->
+    <constant name="struts.multipart.maxSize" value="1024102400"/>
+    <!-- 设置上传文件的临时文件夹,默认使用javax.servlet.context.tempdir -->    
+    <constant name="struts.multipart.saveDir " value="d:/tmp" />
+    <!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->    
+    <constant name="struts.devMode" value="true" />  
+    
+    <package name="default" extends="struts-default">
+        <global-results>
+			<result name="gotoIndex">/index.jsp</result>
+		</global-results>
+		<action name="addStudent" class="whb.controller.AddStudentServlet">
+			<result name="success">/jsp/tip.jsp</result>
+			<result name="input">/jsp/addStudent.jsp</result>
+			<interceptor-ref name="fileUpload">                <!-- 文件过滤 -->                
+			      <param name="allowedTypes"> image/bmp,image/png,image/gif,image/jpeg,image/jpg,image/x-png, image/pjpeg</param>                
+			      <!-- 文件大小, 以字节为单位 -->                
+			      <param name="maximumSize">65536</param>            
+			      </interceptor-ref>            
+			      <!-- 默认拦截器必须放在fileUpload之后，否则无效 -->            
+			 <interceptor-ref name="defaultStack" />  
+		</action>
+		<action name="login" class="whb.controller.LoginAction">
+			<result name="success">/jsp/main.jsp</result>
+			<result name="input">/index.jsp</result>
+		</action>
+		<action name="listStudentsInfo" class="whb.controller.ListAction">
+			<result name="success">/jsp/list.jsp</result>
+		</action>
+		<action name="viewStudentsInfo" class="whb.controller.ViewAction">
+			<result name="success">/jsp/view.jsp</result>
+		</action>
+		<action name="getImage" class="whb.controller.GetPhotoAction">
+			<result name="success">/jsp/view.jsp</result>
+		</action>
+		<action name="deleteStudent" class="whb.controller.DelAction">
+			<result  name="success">/jsp/tip.jsp</result>
+		</action>
+		<action name="searchStudentInfo" class="whb.controller.SearchAction">
+			<result  name="searchId">/jsp/view.jsp</result>
+			<result  name="none">/jsp/tip.jsp</result>
+			<result  name="searchName">/jsp/list.jsp</result>
+		</action>
+    </package>
+    <package name="chart" extends="jfreechart-default">  
+    	<action name="pieChart3DAction" class="whb.controller.PieChart3DAction">
+			<result type="chart">
+				<param name="width">700</param>
+				<param name="height">400</param>
+			</result>
+		</action>
+	</package>
+</struts>
